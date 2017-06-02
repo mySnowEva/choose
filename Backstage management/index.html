@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport'>
+<meta content='yes' name='apple-mobile-web-app-capable'>
+<meta content='yes' name='mobile-web-app-capable'>
+<meta content='black-translucent' name='apple-mobile-web-app-status-bar-style'>
+<meta content='webkit' name='renderer'>
+<title>
+后台管理系统
+</title>
+<link href='images/icon_android.png' rel='icon' sizes='192x192'>
+<link href='images/icon_retina.png' rel='apple-touch-icon' sizes='120x120'>
+<link href='images/icon_retina3x.png' rel='apple-touch-icon' sizes='180x180'>
+<link href='images/icon_ipad.png' rel='apple-touch-icon' sizes='144x144'>
+<link href='images/icon_ipad.png' rel='apple-touch-icon' sizes='152x152'>
+<link href='images/splashes/retina.png' media='(device-width: 320px) and (device-height: 568px)' rel='apple-touch-startup-image'>
+<link href='images/splashes/iphone4_portrait_retina.png' media='(device-width: 320px) and (device-height: 480px)' rel='apple-touch-startup-image'>
+<link href='images/splashes/iphone6_portrait_retina.png' media='(device-width: 375px) and (device-height: 667px)' rel='apple-touch-startup-image'>
+<link href='images/splashes/iphone6plus_portrait_retina.png' media='(device-width: 414px) and (device-height: 736px)' rel='apple-touch-startup-image'>
+<link href='images/splashes/ipad_portrait_retina.png' media='(device-width: 768px) and (device-height: 1024px) and (orientation:portrait)' rel='apple-touch-startup-image'>
+<link href='images/splashes/ipad_landscape_retina.png' media='(device-width: 768px) and (device-height: 1024px) and (orientation:landscape)' rel='apple-touch-startup-image'>
+<style>
+  html, body {
+    font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    overflow: hidden;
+    height: 100%; }
+  
+  body {
+    background: whitesmoke;
+    color: #525e71; }
+    body.mobile {
+      background-color: white; }
+  
+  #download, .modal.fade, #header {
+    display: none; }
+  
+  #notification {
+    position: fixed;
+    top: -70px;
+    left: 0; }
+  
+  .notice {
+    padding: 10px;
+    font-size: 14px; }
+    .notice p {
+      margin-bottom: 10px; }
+  
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: rgba(51, 54, 58, 0.6) transparent;
+    border-radius: 100%;
+    transform-origin: 50% 50% 0px;
+    -webkit-animation: mb-spin 0.8s infinite linear;
+    animation: mb-spin 0.8s infinite linear;
+    display: inline-block; }
+  
+  @-webkit-keyframes mb-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg); }
+  
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg); } }
+  
+  @keyframes mb-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg); }
+  
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg); } }
+  
+  .actions {
+    visibility: hidden; }
+  
+  #safemode, #logo, #install, .cover, #device {
+    display: none; }
+  
+  #fontawesome {
+    position: absolute;
+    top: -65535px;
+    left: -65535px; }
+    #fontawesome .aw {
+      position: absolute;
+      width: auto;
+      white-space: nowrap; }
+    #fontawesome .ah {
+      position: absolute;
+      height: auto;
+      word-break: break-word;
+      word-wrap: break-word; }
+      #fontawesome .ah p {
+        margin-bottom: 5px;
+        white-space: pre-wrap; }
+        #fontawesome .ah p:last-child {
+          margin-bottom: 0px; }
+  
+  #loading {
+    width: 86px;
+    height: 86px;
+    z-index: 2;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-left: -43px;
+    text-align: center;
+    font-size: 12px; }
+    #loading .logo, #loading .indicator {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 86px;
+      height: 86px;
+      overflow: hidden;
+      background: url("images/logo-lg.svg");
+      background-size: 86px 86px; }
+    #loading .logo {
+      opacity: 0.3; }
+    #loading .indicator {
+      opacity: 1;
+      -webkit-transition: all 0.5s ease-in-out;
+      -moz-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out;
+      height: 0%; }
+    #loading span {
+      position: absolute;
+      width: 300px;
+      left: 50%;
+      top: 110px;
+      margin-left: -150px;
+      font-size: 14px;
+      line-height: 28px;
+      color: #f77d77; }
+</style>
+<style>
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px; }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px; }
+</style>
+
+<style>
+  #splash {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f0f0f2; }
+    #splash img {
+      position: absolute;
+      top: 0px;
+      left: 0;
+      width: 100%;
+      height: 100%; }
+    #splash img.landscape {
+      display: none; }
+    #splash .spinner {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      margin-left: -15px; }
+  
+  @media all and (orientation: landscape) {
+    #splash img {
+      position: absolute;
+      left: 0;
+      -webkit-transform: rotate(90deg);
+      -webkit-transform-origin: bottom left; }
+  
+    #splash .spinner {
+      position: absolute;
+      top: 50%;
+      margin-top: -16px; } }
+</style>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="xC1lhoNwEppmptkaA31nYc6au+sSq+X6V4dgc/yq4YwAlzqeRd33UQk0Nd3d/rEiOOQQzQzuqcMdbaIWcS5qeg==" />
+</head>
+<body>
+<div id='fontawesome'>
+<i class='fa fa-user'></i>
+<div class='aw'></div>
+<div class='ah'></div>
+</div>
+<div id='loading'>
+<div class='logo'></div>
+<div class='indicator'></div>
+<span>
+正在读取 后台管理系统...
+</span>
+</div>
+<div data-user='null' id='workspace'>
+<div id='install'>
+<div class='app-inner'>
+<img class='app-icon' src='images/icon_android.png'>
+<h1 class='app-name'>
+后台管理系统
+</h1>
+<div class='app-update-time'>
+<span>
+最后更新
+:
+</span>
+<abbr class='timeago' title='2017-06-02T01:50:26Z'></abbr>
+</div>
+<a class='install-btn' href='/app/ghYwEui4o6Qi6y6lDF5sSMZLnoBGNiu?inapp=1'>
+直接查看
+</a>
+<a class='install install-btn'>
+安装
+</a>
+<a class='download' href='https://itunes.apple.com/cn/app/mockingbot/id1050565468?ls=1&amp;mt=8' id='ios-download'>
+下载墨刀客户端获得最佳展示体验
+</a>
+</div>
+</div>
+<div class='cover wechat'>
+<div class='tip-wrapper'>
+<p class='tip'>
+在浏览器中打开
+</p>
+<img class='arrow' src='images/short-arrow.png'>
+</div>
+</div>
+<div class='cover ipad'>
+<div class='tip-wrapper'>
+<p class='tip'>
+请点击
+<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAA1BAMAAADfUYSoAAAAFVBMVEUAAAAGfv8Eff8Xh/8Ae/cAgfcDev8kxpS2AAAABnRSTlMAgGPrExbGXyRsAAAAYUlEQVQ4y+3MsQ2AMBADQMMEofk6VSZgEyZ4Cu8/Ai+QXgpOmTJuYp2cR+aAZGMRM7rOKENzmss1/i/aDaJ5P6thO0s/C0OLJ3PV1/YTfZhtuvFLlOxjk7/LphmWTTPJ0B64+0mEocrEDQAAAABJRU5ErkJggg==' width='19'>
+,
+然后选择&quot;添加到主屏幕&quot;.
+</p>
+<img class='arrow' src='images/short-arrow.png'>
+</div>
+</div>
+<div class='cover iphone'>
+<div class='tip-wrapper iphone'>
+<p class='tip'>
+请点击
+<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAA1BAMAAADfUYSoAAAAFVBMVEUAAAAGfv8Eff8Xh/8Ae/cAgfcDev8kxpS2AAAABnRSTlMAgGPrExbGXyRsAAAAYUlEQVQ4y+3MsQ2AMBADQMMEofk6VSZgEyZ4Cu8/Ai+QXgpOmTJuYp2cR+aAZGMRM7rOKENzmss1/i/aDaJ5P6thO0s/C0OLJ3PV1/YTfZhtuvFLlOxjk7/LphmWTTPJ0B64+0mEocrEDQAAAABJRU5ErkJggg==' width='19'>
+,
+然后选择&quot;添加到主屏幕&quot;.
+</p>
+<img class='arrow' src='images/down-arrow.png'>
+</div>
+</div>
+<div class='cover building'>
+<div class='tip-wrapper'>
+<p class='tip'>
+正在生成 APK 文件
+</p>
+<div class='spinner'></div>
+</div>
+</div>
+</div>
+<div class='safe-mask' id='safemode'>
+<div class='indicator restore'>
+<div class='spinner'></div>
+<div class='text'>
+此操作可能需要几分钟，请您耐心等待...
+<span class='progress'>0%</span>
+</div>
+</div>
+<div class='indicator success'>
+<span class='icon'>
+<i class='fa fa-smile-o'></i>
+</span>
+<div class='text'>
+数据恢复成功，请刷新此页面。<a onclick="window.location.reload()"> 立刻刷新</a>
+</div>
+</div>
+</div>
+<div class='modal fade modal-small' id='safe-modal'>
+<div class='modal-dialog'>
+<div class='modal-content'>
+<div class='modal-body'>
+<img alt='' src='data:image/svg+xml;base64,Cjxzdmcgd2lkdGg9IjY0cHgiIGhlaWdodD0iNjRweCIgdmlld0JveD0iMTY4IDAgNjQgNjQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQwLjMgKDMzODM5KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9ImljX2Vycm9yX291dGxpbmUiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2OC4wMDAwMDAsIDAuMDAwMDAwKSI+CiAgICAgICAgPGcgaWQ9Ikljb24tMjRweCI+CiAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJTaGFwZSIgcG9pbnRzPSIwIDAgNjQgMCA2NCA2NCAwIDY0Ij48L3BvbHlnb24+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0yOS4zMzMzMzMzLDQwIEwzNC42NjY2NjY3LDQwIEwzNC42NjY2NjY3LDQ1LjMzMzMzMzMgTDI5LjMzMzMzMzMsNDUuMzMzMzMzMyBMMjkuMzMzMzMzMyw0MCBaIE0yOS4zMzMzMzMzLDE4LjY2NjY2NjcgTDM0LjY2NjY2NjcsMTguNjY2NjY2NyBMMzQuNjY2NjY2NywzNC42NjY2NjY3IEwyOS4zMzMzMzMzLDM0LjY2NjY2NjcgTDI5LjMzMzMzMzMsMTguNjY2NjY2NyBaIE0zMS45NzMzMzMzLDUuMzMzMzMzMzMgQzE3LjI1MzMzMzMsNS4zMzMzMzMzMyA1LjMzMzMzMzMzLDE3LjI4IDUuMzMzMzMzMzMsMzIgQzUuMzMzMzMzMzMsNDYuNzIgMTcuMjUzMzMzMyw1OC42NjY2NjY3IDMxLjk3MzMzMzMsNTguNjY2NjY2NyBDNDYuNzIsNTguNjY2NjY2NyA1OC42NjY2NjY3LDQ2LjcyIDU4LjY2NjY2NjcsMzIgQzU4LjY2NjY2NjcsMTcuMjggNDYuNzIsNS4zMzMzMzMzMyAzMS45NzMzMzMzLDUuMzMzMzMzMzMgTDMxLjk3MzMzMzMsNS4zMzMzMzMzMyBaIE0zMiw1My4zMzMzMzMzIEMyMC4yMTMzMzMzLDUzLjMzMzMzMzMgMTAuNjY2NjY2Nyw0My43ODY2NjY3IDEwLjY2NjY2NjcsMzIgQzEwLjY2NjY2NjcsMjAuMjEzMzMzMyAyMC4yMTMzMzMzLDEwLjY2NjY2NjcgMzIsMTAuNjY2NjY2NyBDNDMuNzg2NjY2NywxMC42NjY2NjY3IDUzLjMzMzMzMzMsMjAuMjEzMzMzMyA1My4zMzMzMzMzLDMyIEM1My4zMzMzMzMzLDQzLjc4NjY2NjcgNDMuNzg2NjY2Nyw1My4zMzMzMzMzIDMyLDUzLjMzMzMzMzMgTDMyLDUzLjMzMzMzMzMgWiIgaWQ9IlNoYXBlIiBmaWxsPSIjRjc1QjUwIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4='>
+<h5>非常抱歉！</h5>
+<p id='alert-msg'></p>
+<button class='btn btn-primary' onclick='window.location.reload()'>立即刷新</button>
+</div>
+</div>
+</div>
+</div>
+
+<div id='modals'>
+<div class='modal fade' id='warning-modal'></div>
+<div class='modal fade' id='sharing-modal'></div>
+<div class='modal fade' id='renew_modal'>
+<div class='modal-dialog'>
+<div class='modal-content'>
+<div class='modal-header'>
+<a class='close' data-dismiss='modal' href='#'>×</a>
+<h4>帐户已过期</h4>
+</div>
+<div class='modal-body'>
+<p class='limit team_expired'>
+此团队所属帐户已过期，无法创建新项目，请联系团队所有者续费后重试。
+</p>
+<p class='limit projects_quota screens_quota'>
+您的帐户已超出免费版限制（最多 5 个项目，每项目 20 个页面），您需要升级到付费方案方可继续使用。
+</p>
+<p class='limit collaboration'>
+这是一个协作项目，您需要先续费才能继续编辑此项目，您也可以移除所有成员，并将项目从「我的团队」转移到「我的应用」后，继续编辑。
+</p>
+<p class='limit exporting comments'>
+这是一个收费功能，您需要先续费才能继续使用此功能，如您不是项目或团队所有人，请联系项目或团队所有人续费。
+</p>
+<p class='limit exceed_quota'>
+您的项目已超出免费版图片存储限制（100M），您需要升级到付费方案方可继续使用。
+</p>
+</div>
+<div class='modal-footer'>
+<a class='btn btn-primary' href='/account#plan-card'>
+立即续费
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class='modal fade' id='chrome-warning'>
+<div class='modal-dialog'>
+<div class='modal-content'>
+<div class='modal-header'>
+<button aria-label='Close' class='close' data-dismiss='modal' type='button'>
+<span aria-hidden='true'>
+&times
+</span>
+</button>
+<h4 class='modal-title'>
+<i class='fa fa-warning'></i>
+警告
+</h4>
+</div>
+<div class='modal-body'>
+<p>
+我们发现您正在使用Chrome浏览器，要显示小于12像素的文字，您需要先修改Chrome 的默认最小字体大小设置，
+</p>
+<p>
+<a href='https://modao.cc/posts/63' target='blank'>
+设置方法请参看这篇文章。
+</a>
+</p>
+</div>
+<div class='modal-footer'>
+<button class='btn btn-default' data-dismiss='modal' type='button'>
+知道了
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class='modal fade' id='cheating-warning'>
+<div class='modal-dialog'>
+<div class='modal-content'>
+<div class='modal-body'>
+<p>
+<b>该 Demo 使用墨刀制作，墨刀是在线的原型工具，用于制作应用演示模型。</b>
+</p>
+<p>
+任何要求转账、汇款、购买授权码的行为均是诈骗行为。除官方渠道<a href="https://modao.cc">modao.cc</a>外，通过其他渠道付费，墨刀概不负责。
+</p>
+</div>
+<div class='modal-footer'>
+<a aria-hidden='true' data-dismiss='modal' href='#'>
+知道了，我不会转账
+</a>
+<p class='tips'>
+付费用户可去除此提示
+</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+  (function() {
+    window.MBLocale = 'zh-CN';
+  
+    window.I18N = {
+      "new_app": "创建项目",
+      "preview_demo": "预览模板",
+      "author": "作者",
+      "create": "创建",
+      "setting": "设置",
+      "update": "更新",
+      "are_you_sure": "您确定要执行此操作吗？",
+      "screen_remove_confirmation": "有\u003cb\u003e {children} 个子页面\u003c/b\u003e，此页面及其所有子页面都将被删除, 您确定吗？",
+      "cant_remove_screen": "您的项目需要至少一个页面。",
+      "last_updated": "最后更新",
+      "support": "技术支持",
+      "carrier": "translation missing: zh-CN.carrier",
+      "remove_parent_only": "不，只删除父页面",
+      "remove_all": "是的，删除父页面及所有子页面",
+      "drag_to_link_screen": "拖动圆圈到右侧目标页面创建交互",
+      "password": "密码",
+      "screen": "页面",
+      "home": "主页",
+      "pay_with_alipay": "translation missing: zh-CN.pay_with_alipay",
+      "share": "分享",
+      "back": "返回",
+      "login_from_desktop": "要创建新项目，请使用桌面浏览器登录墨刀。",
+      "install": "安装",
+      "tap": "请点击",
+      "public": "公开",
+      "private": "加密",
+      "add_to_home_screen": "然后选择\"添加到主屏幕\".",
+      "open_in_broswer": "translation missing: zh-CN.open_in_broswer",
+      "dup_app_confirmation": "确定要复制此项目吗？",
+      "data_lost_warning": "您还有数据没有保存，确定要退出吗？",
+      "drag_to_create_screen": "拖拽图片创建新页",
+      "regenerate": "重新生成",
+      "got_it": "知道了",
+      "network_error": "网络连接超时，无法保存您的操作，请检查您的网络并重新保存，取决于您的网络状况，如您上传的图片文件较大，可能需要多尝试几次。",
+      "unsupported": "不支持此文件类型",
+      "link_back": "返回上一页",
+      "drag_to_start": "拖动组件或图片文件到这里",
+      "home_screen": "主屏幕",
+      "signup_required": "您需要注册后才可使用此功能。",
+      "credential_required": "此项目受密码保护，请输入你的密码凭证：",
+      "state": "状态",
+      "new": "新建",
+      "widgets": "Widgets(1)",
+      "new_combo": "新组合",
+      "invalid_credential": "无效的密码，请刷新后重试。",
+      "app_device": "设备类型",
+      "app_type": "项目类型",
+      "icon": "图标",
+      "splash": "启动界面",
+      "size": "尺寸",
+      "icon_and_splash": "图标和启动图",
+      "tr": {
+        "none": "默认",
+        "slideleft": "右移入",
+        "slideright": "左移入",
+        "slidebottom": "下移入",
+        "slidetop": "上移入",
+        "leftmenu": "左菜单",
+        "rightmenu": "右菜单",
+        "leftdrawer": "左抽屉",
+        "rightdrawer": "右抽屉",
+        "slideleft2": "左弹入",
+        "slideright2": "右弹入",
+        "topin": "上弹入",
+        "popin": "下弹入",
+        "leftout": "左弹出",
+        "rightout": "右弹出",
+        "topout": "上弹出",
+        "popout": "下弹出"
+      },
+      "target": "translation missing: zh-CN.target",
+      "png_only": "图标/启动屏幕只支持PNG文件",
+      "all_apps": "我的当前项目",
+      "inbox": "移入当前项目",
+      "sharing": "分享",
+      "owner_only": "只有所有者或管理员可以邀请新成员",
+      "sharing_url": "分享链接",
+      "toolbox": "translation missing: zh-CN.toolbox",
+      "last_saved": "最后保存",
+      "archive": "移入归档项目",
+      "download": "下载",
+      "archived": "我的归档项目",
+      "del_app_confirmation": "您确定要删除此项目吗？",
+      "wait_for_saving": "此页面尚未保存，请您稍后再试。",
+      "fix_data": "我们检测到您上次退出时有未保存的修改，您希望现在保存吗？",
+      "upload_image": "上传图片",
+      "site_title": "墨刀",
+      "wechat": "微信",
+      "choose_screen": "选择要跳转的页面",
+      "hdistribute": "水平等间距",
+      "vdistribute": "垂直等间距",
+      "hright": "右对齐",
+      "make_a_copy": "创建副本",
+      "more_options": "更多选项",
+      "unsaved": "未保存",
+      "all_saved": "全部操作已保存",
+      "timer": "定时器",
+      "no_timer": "未设置",
+      "cant_delete_template": "无法删除此母版，请先删除此母版的所有实例。",
+      "archive_confirmation": "您确定要归档此项目吗？",
+      "unarchive_confirmation": "您确定要取消归档此项目吗？",
+      "dc_confirm": "此页面有多个子页面，确定要复制所有子页面吗？",
+      "delete": "删除",
+      "expand_screen": "扩展屏幕高度",
+      "shrink_screen": "缩减屏幕高度",
+      "watch_tutorial": "观看教学视频",
+      "edit": "编辑",
+      "builtin_theme": "内置主题",
+      "custom_theme": "自定义主题",
+      "screen_bgcolor": "设置背景色",
+      "screen_bgimage": "设置背景图片",
+      "pg_tooltip": "全局手势",
+      "lr_tooltip": "可按住 Ctrl/Cmd 拖动鼠标快速创建链接区域",
+      "icon_tooltip": "图标",
+      "sticky_tooltip": "批注组件可显示在页面任意位置",
+      "menu_offset": "菜单偏移%",
+      "edit_demo": "编辑演示项目",
+      "create_new": "创建新项目",
+      "blank_app": "空白项目",
+      "template_app": "模板项目",
+      "basic": "基本",
+      "shapes": "形状",
+      "bars": "工具栏",
+      "others": "其它",
+      "webpage": "网页",
+      "drag_to_resize": "拖动调节页面高度",
+      "https_only": "双击编辑URL，处于安全考虑，外部网页组件仅支持https协议网站。",
+      "template_search": "搜索母版",
+      "no_archived_app": "小墨提示：还没有已归档的APP哦",
+      "archive_app": "你可以电脑访问墨刀归档APP",
+      "no_app": "你还没有创建项目",
+      "visit_via_computer": "你可以电脑访问墨刀",
+      "view_demo": "查看官方演示项目",
+      "sharing_password": "访问密码（可为空）",
+      "edit_screens": "编辑项目",
+      "state_link_tutorial": "观看母版链接教学视频",
+      "highlight_clickable": "高亮链接区域",
+      "type2search": "输入搜索",
+      "text_color": "文字颜色",
+      "search_doc": "搜索文档",
+      "combo_search": "搜索组合",
+      "all_combos": "所有组合",
+      "my_combos": "我的组合",
+      "builtin": "内置",
+      "width": "宽度",
+      "height": "高度",
+      "sticky": "批注",
+      "new_template": "新母版",
+      "auto_scale": "自动缩放",
+      "auto_scale_tip": "自动缩放以适配不同设备, 比如，勾选此选项后，为iPhone 5设计的组合在iPhone 6上将会放大1.17倍，在iPhone 6 plus上会放大1.29倍。",
+      "drag_widgets_2create": "拖拽组件创建组合",
+      "upgrade_prompt": "新版本已修复下载功能，请使用浏览器访问modao.cc下载。",
+      "embed": "嵌入",
+      "submit_app_proposal": "需要更多模板项目？\u003ca href=\"#page/forum/feature_request\" data-toggle=\"modal\"\u003e点这里告诉我们\u003c/a\u003e",
+      "shell_type": "边框类型",
+      "device_shell": "真实设备边框",
+      "default_shell": "默认边框",
+      "none_shell": "无边框",
+      "default_shell_field": "默认边框",
+      "upload_own": "上传自定义图片",
+      "upload_icon": "上传新图标",
+      "upload_splash": "上传新启动图",
+      "app_name": "名称",
+      "free_trial": "14天免费试用，查看价格",
+      "restricted": "白名单",
+      "public_intro": "在个人主页显示此项目。",
+      "private_intro": "所有知道 URL 和密码的人都可查看。",
+      "restricted_intro": "只有我指定的人有权查看。 ",
+      "expired": "已过期",
+      "manage_collaborators": "管理团队成员",
+      "roles": {
+        "admin": "管理员",
+        "admin_desc": "所有权限",
+        "editor": "协作者",
+        "editor_desc": "修改,复制",
+        "viewer": "审阅者",
+        "viewer_desc": "查看,评论",
+        "owner": "所有者"
+      },
+      "invite": "邀请",
+      "pending": "等待",
+      "others_apps": "的项目",
+      "remove_me": "退出",
+      "invalid_post": "请输入内容或选择一个项目",
+      "cant_invite_self": "您已经在此项目中.",
+      "left": "左",
+      "right": "右",
+      "top": "上",
+      "down": "下",
+      "password_protection": "升级帐户添加密码保护。",
+      "dip_help": "如何设置项目分辨率？",
+      "dblclick_to_edit": "双击编辑母版",
+      "name_copy": "副本",
+      "load_project": "正在读取项目数据，请稍候...",
+      "connect_to_push_server": "正在连接同步服务器，请稍候...",
+      "reconnect_push_server": "您已断开与服务器的连接, 正在重新连接，请稍候...",
+      "invalid_email": "无效的Email",
+      "cant_invite_yourself": "不能邀请自己",
+      "already_invited": "已经邀请过了",
+      "exceed_collaborator_limit": "您已超出当前计划所支持的团队成员数目，需要升级帐户。",
+      "in_progress": "此操作可能需要几分钟，请您耐心等待...",
+      "screen_list": "页面列表",
+      "text_mode": "文本选择模式",
+      "link_mode": "链接模式",
+      "exceed_project_limit": "您的帐户已超出免费版限制（最多 5 个项目，每项目 20 个页面），您需要升级到付费方案方可继续使用。",
+      "team_expired": "此团队所属帐户已过期，无法创建新项目，请联系团队所有者续费后重试。",
+      "order_period": "付款时长",
+      "current_plan": "当前方案",
+      "next_billing_on": "当前方案到期",
+      "balance_left": "translation missing: zh-CN.balance_left",
+      "enterprise": "企业版",
+      "actually_pay": "translation missing: zh-CN.actually_pay",
+      "monthly": "月付",
+      "yearly": "年付",
+      "pro": "增强版",
+      "free": "免费版",
+      "standard": "标准版",
+      "startup": "创业版",
+      "invalid_comment": "评论内容不能为空",
+      "electron_download_alert": "点击没有反应？请先从浏览器进行下载，我们已知悉并正在解决此问题。",
+      "no_permission": "对不起，您没有权限编辑此母版，请双击实例进行编辑。",
+      "widget_list": "组件列表",
+      "team_name": "团队名称",
+      "edit_team": "编辑团队",
+      "team_icon": "团队图标",
+      "team_color": "团队颜色",
+      "icon_and_color": "图标和颜色",
+      "team": "团队",
+      "role": "角色",
+      "projects_count": "项目",
+      "screens_count": "页面",
+      "members_count": "团队成员",
+      "choose_team": "选择团队",
+      "no_joined_team": "您没有加入任何团队",
+      "import_app": "导入个人项目",
+      "choose_app": "选择一个项目",
+      "dup_and_import": "复制此项目并导入副本",
+      "no_privilege": "对不起，您没有足够的权限执行此操作。",
+      "delete_projects_first": "删除团队前需要先删除所有项目。",
+      "refresh_token_confirmation": "此操作将会重新生成分享URL，使用旧URL将无法再访问此项目，确认要重新生成吗？",
+      "main_state": "translation missing: zh-CN.main_state",
+      "ani_name": "动效",
+      "ani_delay": "延迟",
+      "ani_duration": "动效时长",
+      "ani_count": "重复次数",
+      "animate": "动起来",
+      "none": "无",
+      "default": "默认",
+      "infinite": "无限循环",
+      "whats_this": "这是什么？",
+      "exceed_screen_limit": "这个项目的组件及状态数量已超过 5 万，为了保证项目的打开速度，以及良好的编辑和运行时体验，您暂时不能再在此项目中添加新的页面及状态，我们建议您创建一个新的项目来完成这部分工作。",
+      "new_state": "新状态",
+      "tutorial": "教程",
+      "reset_target_screen": "重置目标页为初始状态",
+      "android.customize": "自定义安卓设备",
+      "unsaved_changes": "您的项目还有改动尚未保存，为保证导出内容无误，请先确保所有改动都已保存再重新导出。",
+      "transfer_screen": "转移此页面及子页面到其它项目",
+      "transfer": "转移",
+      "minputs": "输入组件",
+      "move": "移动",
+      "global_state": "全局状态",
+      "global_state_link_error": "全局状态不允许创建状态链接",
+      "input_types": {
+        "text": "文字",
+        "number": "数字",
+        "search": "搜索",
+        "password": "密码",
+        "date": "日期",
+        "time": "时间",
+        "datetime": "日期时间"
+      },
+      "move_tips": "创建一个副本，并移动副本到选定团队。",
+      "g": {
+        "tap": "单击",
+        "left": "左滑",
+        "right": "右滑",
+        "up": "上滑",
+        "down": "下滑",
+        "hold": "长按",
+        "dtap": "双击",
+        "shake": "摇一摇",
+        "timer": "定时器",
+        "vscroll": "垂直滚动"
+      },
+      "choose_move_dst": "选择移动位置",
+      "name": "名称",
+      "my_apps": "我的项目",
+      "team_apps": "我的团队",
+      "remove_clip": "移除图片裁切",
+      "update_colorset": "更新主题",
+      "colorset_tips": "提示：Shift-NUM套用主题，点选添加/更新主题",
+      "new_colorset": "添加主题",
+      "replace_image": "替换图片",
+      "cancel": "取消",
+      "duplicate_all": "是，连同子页面一起复制",
+      "duplicate_parent_only": "不，只复制父页面",
+      "coupon": "折扣码",
+      "new_flow": "新工作流",
+      "flow": "工作流",
+      "untitled_flow": "未命名工作流 - 双击进行编辑",
+      "ipa_building_starts": "已开始为您生成 iOS 应用程序，就绪后会发送邮件到您的邮箱，请注意查收。",
+      "ipa_device.not_configured": "您目前无可安装设备，请先联系团队管理员添加您的设备",
+      "no_ios_certificate": "没有可使用的苹果开发者证书，请联系墨刀客服添加证书。",
+      "go_to_account_settings": "前往帐户设置",
+      "ios_offline": "iOS IPA",
+      "import": "导入",
+      "import_template": "导入其它项目母版",
+      "choose_template_to_import": "选择要导入的母版",
+      "full_view": "全局工作流",
+      "edit_workflows": "编辑工作流",
+      "view_app": "直接查看",
+      "view_workflows": "查看工作流",
+      "expand_all": "展开所有父页",
+      "fold_all": "translation missing: zh-CN.fold_all",
+      "apply_coupon": "应用折扣",
+      "notifications": {
+        "all": "通知",
+        "view_all": "查看全部",
+        "load_more": "加载更多",
+        "request_permission": "若您要在这台电脑上使用墨刀，我们强烈建议您开启桌面通知功能。",
+        "enable_notification": "开启通知功能",
+        "ask_later": "下次再开启",
+        "never_ask_again": "不再询问",
+        "mark_all_as_read": "全部标记为已读",
+        "empty": "目前还没有通知"
+      },
+      "loading": "正在读取",
+      "untitled_editable": "未命名 - 双击进行编辑",
+      "got_message": "收到一条通知",
+      "buy": "购买",
+      "no_post": "还没有帖子，快来创建新帖吧",
+      "click2create": "点击创建",
+      "login_to_vote": "请登录后点赞",
+      "preview": {
+        "powered_by_modao": "使用墨刀制作",
+        "comment": {
+          "switch": "评论模式",
+          "tip": "双击预览区域添加新评论",
+          "tip_signin": "登录以添加新评论",
+          "tip_not_collaborator": "当前登录帐号不在协作名单中，请联系项目所有者获取权限，参与讨论",
+          "panel": " 条评论",
+          "thread_create": "评论",
+          "thread_delete_confirm": "永久删除本组评论？",
+          "thread_none": "无评论",
+          "thread_none_tip": "点击底部按钮或双击预览区添加新评论",
+          "thread_none_tip_signin": "使用下方按钮登录以添加新评论",
+          "comment_placeholder": "使用 Shift + Enter 换行",
+          "comment_create": "回复",
+          "comment_create_initial": "创建",
+          "comment_create_initial_title": "创建评论",
+          "comment_delete_confirm": "永久删除本条回复？",
+          "modify_edit": "编辑",
+          "modify_delete": "删除",
+          "reply": " 条回复",
+          "reply_none": "无回复",
+          "reply_none_tip": "请在下方添加评论内容以创建评论",
+          "reply_new": " 未读",
+          "reply_new_thread": "新",
+          "divider_new": "新回复",
+          "show_all_0": "展开",
+          "show_all_1": " 条回复",
+          "tag_edited": "修改",
+          "unfold": "展开"
+        },
+        "screen": {
+          "panel": "页面",
+          "total_page": "页面总数",
+          "open_paren": "（",
+          "close_paren": "）"
+        }
+      },
+      "web_signin": "登录",
+      "switch_to_free": "您的帐户过期后将会自动降级为免费方案，无需手动切换。",
+      "other_settings": "其它设置",
+      "new_post": "新帖子",
+      "choose_category": "选择分类",
+      "project": "项目",
+      "acl_moved_to_sharing": "项目访问权限设置已移至分享面板。",
+      "who_can_access": "谁可以访问此项目",
+      "helpful": " 有帮助 ",
+      "contact_us": "联系我们，获得帮助 ",
+      "no_more": "没有更多了",
+      "search_guides": "搜索教程",
+      "unknown_error": "服务器发生未知错误，我们已经知晓此问题，并正在紧急修复中，为避免数据丢失，请您刷新此页面再进行后续操作。",
+      "new_version_detected": "检测到您已打开此页面\u003cspan\u003e超过10小时\u003c/span\u003e，目前墨刀长时间运行可能会产生一些无法预知的小问题，为了您的正常使用，请先刷新此页面，我们正在解决此问题，给您带来不便我们深感抱歉。",
+      "no_team": "您还没有团队",
+      "no_team_app": "此团队还没有任何项目",
+      "create_app_tips": "你可以在这里快速创建项目原型，或者通过模板创建。",
+      "create_team_tips": "点击这里创建一个团队",
+      "new_team": "创建团队",
+      "client_download": "macOS和Windows版客户端下载",
+      "tutorial_video": "墨刀教程和视频",
+      "created_time": "最早创建在前",
+      "updated_time": "最后修改在前",
+      "forum": "讨论区",
+      "all_teams": "所有团队",
+      "created_teams": "我创建的团队",
+      "joined_teams": "我加入的团队",
+      "team_intro": "点击了解团队功能",
+      "liked": "被赞",
+      "karma": "Karma",
+      "edit_profile": "编辑个人资料",
+      "public_projects": "公开作品",
+      "my_posts": "我的发表",
+      "his_posts": "Ta的发表",
+      "my_comments": "我的评论",
+      "his_comments": "Ta的评论",
+      "sharing_app": "分享原型",
+      "embed_app": "嵌入代码",
+      "permission": "权限",
+      "access_permission": "访问权限",
+      "preview_settings": "播放选项",
+      "embed_tips": "通过复制下面的代码将原型插入到网站或博客中。",
+      "view_in_browser": "跳过安装提示界面，直接在微信/浏览器内运行应用。",
+      "functional_widgets": "功能",
+      "locale_text": "EN",
+      "trial_expired": "试用过期",
+      "upgrade": "升级",
+      "renew": "续费",
+      "active": "有效",
+      "guide": "新手教程",
+      "feature_update": "功能更新",
+      "my_account": "我的帐户",
+      "signout": "登出",
+      "switch_to_old": "返回旧版",
+      "trial": "试用中",
+      "project_duplicated": "副本正在创建中，请稍候...",
+      "project_duplicating": "复制中, 请稍候...",
+      "project_duplicate_failed": "项目复制失败, 请重试",
+      "add_to": "添加至",
+      "custom_combo": "自定义组合",
+      "lock_widget": "锁定组件",
+      "unlock": "解锁",
+      "widgets_here": "此处的组件",
+      "widgets_selected": "选中的组件",
+      "fixed_widget": "固定位置",
+      "error_project": "当前项目因为数据异常无法打开, 请点击确认将其删除",
+      "recover": "恢复",
+      "no_deleted_screens": "回收站里空空如也",
+      "transh_can": "回收站",
+      "project_transh_can": "项目回收站",
+      "electron_upgrading_title": "请下载最新版客户端",
+      "electron_upgrading_msg": "此功能需要最新版客户端方可使用，\u003ca href='/downloads#sec-desktop' target='_blank'\u003e点击此处下载最新版客户端\u003c/a\u003e",
+      "export_method": "选择导出格式",
+      "download_export_file": "开始下载",
+      "prepared": "完成!",
+      "generate_ipa": "生成应用",
+      "html5_zip": "HTML压缩包",
+      "current_png": "当前页PNG",
+      "current_pngs": "全部PNG",
+      "apk_file": "安卓APK(离线)",
+      "prepare_downloading": "正在为您生成下载文件，请稍候...",
+      "your_file_is_ready": "文件已开始自动下载，如果没有开始，请点击【开始下载】",
+      "operate": "操作",
+      "save": "保存",
+      "save_tip": "保存 (ctrl+S)",
+      "undo": "撤销",
+      "undo_tip": "撤销 (ctrl+Z)",
+      "redo": "重做",
+      "redo_tip": "重做 (ctrl+Y)",
+      "cut": "剪切",
+      "cut_tip": "剪切 (ctrl+X)",
+      "copy": "复制",
+      "copy_tip": "复制 (ctrl+C)",
+      "paste": "粘贴",
+      "paste_tip": "粘贴 (ctrl+V)",
+      "paste_directly": "到原位置",
+      "paste_to_point": "到当前位置",
+      "send_front": "置于顶层",
+      "send_back": "置于底层",
+      "forward": "上移一层",
+      "backward": "下移一层",
+      "link_line": "链接",
+      "grid": "格线",
+      "ruler": "量尺",
+      "lock": "锁定",
+      "export": "导出",
+      "rotate": "旋转",
+      "layout": "图层",
+      "assets": "图片库",
+      "align": "对齐",
+      "hleft": "左对齐",
+      "hleft_tip": "左对齐 (ctrl+alt+L)",
+      "hcenter": "水平居中",
+      "hcenter_tip": "水平居中 (ctrl+alt+C)",
+      "hright_tip": "右对齐 (ctrl+alt+R)",
+      "vtop": "顶对齐",
+      "vtop_tip": "顶对齐 (ctrl+alt+T)",
+      "vcenter": "垂直居中",
+      "vcenter_tip": "垂直居中 (ctrl+alt+V)",
+      "vbottom": "底对齐",
+      "vbottom_tip": "底对齐 (ctrl+alt+B)",
+      "distribute": "分布",
+      "hdistribute_tip": "水平等间距 (ctrl+shift+H)",
+      "vdistribute_tip": "垂直等间距 (ctrl+shift+U)",
+      "group": "组合",
+      "group_tip": "组合 (ctrl+G)",
+      "ungroup": "打散",
+      "ungroup_tip": "打散 (ctrl+U)",
+      "landscape": "横屏",
+      "portrait": "竖屏",
+      "zoomin": "放大",
+      "zoomout": "缩小",
+      "launch": "运行",
+      "hide": "隐藏",
+      "font_size": "文字",
+      "h_align": "水平对齐",
+      "v_align": "垂直对齐",
+      "color": "颜色",
+      "fg_color": "前景色",
+      "bg_color": "背景色",
+      "border": "边框",
+      "border_style": "边框类型",
+      "border_color": "边框颜色",
+      "border_width": "线宽",
+      "shadow": "阴影",
+      "shadow_color": "阴影颜色",
+      "shadow_width": "阴影宽度",
+      "widget": "组件",
+      "master": "母版",
+      "combo": "组合",
+      "search_icon": "搜索图标",
+      "search_master": "搜索母版",
+      "search_combo": "搜索组合",
+      "icons": {
+        "all": "全部",
+        "web_app": "Web App",
+        "medical": "医疗",
+        "text_editor": "文字编辑",
+        "spinner": "旋转",
+        "file_type": "文件类型",
+        "directional": "方向",
+        "video_player": "播放器",
+        "form_control": "表单",
+        "transportation": "交通",
+        "chart": "图表",
+        "brand": "Logo",
+        "hand": "手势",
+        "payment": "支付",
+        "currency": "货币",
+        "accessibility": "无障碍",
+        "gender": "性別",
+        "av": "音视频",
+        "action": "动作",
+        "alert": "告警",
+        "communication": "沟通",
+        "content": "编辑",
+        "device": "设备",
+        "editor": "文字编辑",
+        "file": "文件",
+        "handware": "硬件",
+        "image": "影像",
+        "maps": "地图",
+        "navi": "导览",
+        "notif": "通知",
+        "places": "地点",
+        "social": "社交",
+        "toggle": "切换",
+        "widgets": "组件",
+        "tool": "工具",
+        "miscellaneous": "其他"
+      },
+      "w": {
+        "all": "全部",
+        "basic": "基本组件",
+        "label": "文字",
+        "text_view": "多行文字",
+        "icon_button": "图标",
+        "image_view": "图片",
+        "button": "按钮",
+        "mtooltip": "聊天气泡",
+        "webpage": "网页",
+        "functional": "功能组件",
+        "pg": "全局手势",
+        "lr": "链接区域",
+        "sticky": "批注",
+        "shape": "形状组件",
+        "rounded_rect": "矩形",
+        "circle_rect": "圆形",
+        "hr": "线条",
+        "ve": "线条",
+        "triangleb": "三角",
+        "triangletl": "三角",
+        "input": "输入组件",
+        "mtext_input": "单行输入",
+        "mtextarea": "多行输入",
+        "mcheckbox2": "复选框",
+        "mradiobutton": "单选框",
+        "mselect": "下拉框",
+        "mfile_input": "选择文件",
+        "switch": "开关按钮",
+        "bar": "工具栏",
+        "navigation_bar": "标题栏",
+        "tab_bar": "底栏",
+        "rectangle": "空白通栏",
+        "search_bar": "搜索框",
+        "tab_item": "标签",
+        "other": "其他",
+        "map_view": "地图",
+        "keyboard": "键盘",
+        "status_bar": "状态栏",
+        "panel": "母版实例",
+        "group": "群组",
+        "navbar_title": "标题",
+        "search": "搜索",
+        "return": "换行",
+        "carrier": "中国移动",
+        "text_view_placeholder": "如果你无法简洁的表达你的想法，那只说明你还不够了解它。\n  -- 阿尔伯特·爱因斯坦"
+      },
+      "link_to_prev": "返回上一页",
+      "select_panel_states": "选择一个状态创建母版链接",
+      "component": "元素",
+      "new_screen": "新页面",
+      "screen_transh_can": "页面回收站",
+      "main_panel": "设置",
+      "inspector": {
+        "position": "位置及外观",
+        "rotate": "旋转",
+        "radius": "圆角",
+        "is": "图标大小",
+        "o": "不透明度",
+        "input_type": "键盘样式",
+        "circularize": "圆形",
+        "squareize": "正方形",
+        "checked": "是否勾选",
+        "fixed": "运行时固定位置",
+        "not_fixed": "不固定",
+        "fixed_auto": "自动检测固定方向",
+        "fixed_top": "相对顶部固定",
+        "fixed_bottom": "相对底部固定",
+        "main_state": "默认状态",
+        "text": "文本设置",
+        "line_height": "行高",
+        "padding": "间距",
+        "image": "图片设置",
+        "p": "等比缩放图片",
+        "drag_image_here": "将图片拖到这里或者点击",
+        "upload_image": "“上传 | 管理图片”",
+        "reset": "重置",
+        "clip": "剪贴蒙版",
+        "filter": "滤镜",
+        "blur": "模糊",
+        "grayscale": "灰度",
+        "sepia": "加温",
+        "brightness": "亮度",
+        "contrast": "对比度",
+        "hue_rotate": "色相",
+        "invert": "反色",
+        "saturate": "饱和度",
+        "state": "状态选择",
+        "show_case": "效果展示",
+        "animation": "动效",
+        "ani_delay": "延时",
+        "ani_duration": "动效时长",
+        "ani_count": "重复次数",
+        "kbd_style": "键盘样式",
+        "text_kbd": "文本",
+        "numeric_kbd": "数字",
+        "tt_placement": "箭头方向",
+        "tt_offset": "箭头偏移",
+        "tt_arrow_size": "箭头大小"
+      },
+      "ani": {
+        "none": "无",
+        "attention_seekers": "引起注意",
+        "bouncing_entrances": "弹入",
+        "flippers": "翻转",
+        "rotating_entrances": "旋转",
+        "sliding_entrances": "滑入",
+        "zoom_entrances": "缩放",
+        "specials": "其它",
+        "bounce": "弹跳",
+        "fadeIn": "渐现",
+        "fadeOut": "渐出",
+        "flash": "闪烁",
+        "pulse": "跳动",
+        "rubberBand": "橡皮筋",
+        "shake": "抖动",
+        "swing": "摆动",
+        "tada": "哒啷",
+        "wobble": "摇晃",
+        "jello": "扭曲抖动",
+        "bounceIn": "弹入",
+        "bounceInDown": "上弹入",
+        "bounceInLeft": "左弹入",
+        "bounceInRight": "右弹入",
+        "bounceInUp": "下弹入",
+        "flipInX": "水平翻转",
+        "flipInY": "垂直翻转",
+        "spinning": "旋转（顺时针）",
+        "spinning-reverse": "旋转（逆时针）",
+        "rotateIn": "旋入",
+        "rotateInDownLeft": "左下旋转",
+        "rotateInDownRight": "右下旋转",
+        "rotateInUpLeft": "左上旋转",
+        "rotateInUpRight": "右上旋转",
+        "slideInDown": "上滑入",
+        "slideInLeft": "左滑入",
+        "slideInRight": "右滑入",
+        "slideInUp": "下滑入",
+        "zoomIn": "逐渐放大",
+        "zoomInDown": "从下放大",
+        "zoomInLeft": "从左放大",
+        "zoomInRight": "从右放大",
+        "zoomInUp": "从上放大",
+        "rollIn": "滚入",
+        "lightSpeedIn": "闪入"
+      },
+      "asset_search": "输入图片名称",
+      "all_assets": "全部图片",
+      "my_assets": "我的图片",
+      "current_project": "当前项目",
+      "my_project": "我的项目",
+      "created_project": "创建项目",
+      "archived_project": "归档项目",
+      "collaborate_project": "协作项目",
+      "team_project": "团队项目",
+      "tags": "标签",
+      "manage": "管理",
+      "finish": "完成",
+      "create_tag": "创建新标签",
+      "type_tag_name": "输入标签名称",
+      "tags_placeholder": "选择一个图片添加标签",
+      "no_selected": "未选择图片",
+      "no_assets": "没有找到您要的素材, 请点击右下角上传",
+      "insert_to_current": "插入当前页",
+      "drag_image_here": "将图片拖到这里或",
+      "upload": "上传",
+      "storage": "存储",
+      "preview_panel": {
+        "comment": "评论",
+        "developer_mode": "开发者模式",
+        "text": "文字",
+        "typeface": "字型",
+        "font_size": "字号",
+        "offset": "起始",
+        "length": "长度",
+        "Fills": "填充色",
+        "fills": "填充色",
+        "width": "宽",
+        "height": "高",
+        "borders": "边框",
+        "thickness": "宽度",
+        "color": "颜色",
+        "position": "位置",
+        "bd_radius": "圆角宽度",
+        "align": "对齐方式",
+        "line_height": "行高",
+        "copied": "已复制!"
+      },
+      "default_color": "默认颜色",
+      "history_color": "最近使用颜色",
+      "account": {
+        "pay_success": "支付成功",
+        "reload_after_countdown": "\u003cspan style=\"color: #F55D54\"\u003e\u003c/span\u003e 秒后自动跳转",
+        "switch_plan": "切换方案",
+        "renew": "续费",
+        "pay_with_paypal": "使用Paypal支付",
+        "pay_with_alipay": "使用支付宝支付",
+        "pay_with_wechat": "使用微信支付",
+        "scan_with_wechat": "使用微信扫一扫付款",
+        "provided_by_pingxx": "本支付服务由 Ping++ 提供",
+        "reload": "立即刷新",
+        "balance_left": "剩余时长抵现",
+        "actually_pay": "实际应付",
+        "save_17": "节省17%",
+        "new_plan": "新方案",
+        "new_billing_date": "新续费日",
+        "payment_methods": "支付方式",
+        "wechat_pay": "微信支付",
+        "confirm_pay": "确认支付",
+        "pay": "支付",
+        "discount": "当前折扣"
+      }
+    };
+  
+  }).call(this);
+</script>
+
+<script>
+  (function() {
+    var splash;
+  
+    splash = document.getElementById('splashimg');
+  
+    if (splash && window.innerWidth > window.innerHeight) {
+      splash.style.width = window.innerHeight + 'px';
+      splash.style.height = window.innerWidth + 'px';
+      splash.style.top = (0 - window.innerWidth) + 'px';
+    }
+  
+  }).call(this);
+</script>
+<link rel="stylesheet" media="screen" href="webpack/font-icons-a3455f2212fc0621eac4efdae2022fdb.css" />
+<link href='css/roboto.css' media='screen' rel='stylesheet'>
+
+<link rel="stylesheet" media="screen" href="assets/sharing-ad3e5e100c2e3ab6dd2f2f90d586f8c8.css" />
+<link rel="stylesheet" media="screen" href="webpack/preview-2e70b3be38d0e3632c4a9d932890e6b5.css" />
+<script>
+  document.getElementsByClassName("indicator")[0].style.height = '30%';
+  var MBServer = "modao.cc";
+</script>
+<script>
+   var webpackManifest = {"0":"0-933f4c2424a180975f36.js","1":"1-09d71b57c9bcee15e3cc.js","2":"2-7a1a3abffdf02ce8c05e.js","3":"3-9e719b5dcabbc200e711.js","4":"4-dddefbc08bf60920c84d.js","5":"5-f36dbc5471a67bbd437a.js","6":"6-794eccc8e7f4cf780aa4.js","7":"7-7722c16e60204b4ffd22.js","8":"8-33cd02782b6d879473bb.js","9":"9-6dd74b20cb00fe304cde.js","10":"10-1b9f6127f2bafd77835b.js","11":"11-0c7e010d02fe3279d9fa.js","12":"12-94810f163f25508077d6.js","13":"13-53998de85165b15800fe.js"}
+</script>
+<script src="webpack/manifest-3cd1e32f3623a0e06331.js"></script>
+<script src="webpack/vendor-933f4c2424a180975f36.js"></script>
+<script src="assets/sharing-f06c2f89c78ef9104117a13d5228cab5.js"></script>
+<script src="webpack/preview-7a1a3abffdf02ce8c05e.js"></script>
+<script>
+  (function() {
+    MB.play = function() {
+      return MB.load('ghYwEui4o6Qi6y6lDF5sSMZLnoBGNiu', false, '');
+    };
+  
+    $(function() {
+      if (MB.isMobile()) {
+        $("body").addClass('mobile');
+        MB.mp("在移动端打开了应用");
+        MB.ga('send', 'event', 'goal', "在移动端打开了应用");
+      }
+      if (!window.navigator.standalone && !false && MB.isMobile() && !MB.isLocal()) {
+        MB.initWechat(null);
+        return MB.initInstall();
+      } else if (MB.isPhantom()) {
+        return $("body").addClass('phantom');
+      } else {
+        return MB.play();
+      }
+    });
+  
+  }).call(this);
+</script>
+
+</body>
+</html>
+<script>window.MBData=
+{"templates":[],"project":{"owner_id":388233,"owner_plan":"startup","owner_name":"小雪","owner_email":"1185909522@qq.com","owner_paid":false,"owner_avatar":"/images/avatar.png","limitation":{"collaborators":5,"storage":100000,"exportable":true,"encryptable":true,"projects":6553500},"channels":["1185909522qqcom388233"],"screens_count":1,"cid":"pD588D742E31496301979040","team_cid":null,"name":"后台管理系统","updated_at":"2017-06-02T01:50:26Z","created_at":"2017-06-01T07:27:45Z","access":"private","access_token":"ghYwEui4o6Qi6y6lDF5sSMZLnoBGNiu","version":"v2","icon":"/images/icon_retina.png","splash":null,"width":1920,"height":1080,"device":"web","model":"desktop","scale":75,"archived":false,"template":false,"timestamp":"1496368226","combo":false,"behavior":"inherit","master":false,"builtin":false,"auto_scale":false,"parent_cid":null,"host_cid":null,"clones":0,"shell_type":"none","password":"","wechat":false,"highlight":true,"expired":false,"validated":false,"duplicating":false,"slack_web_hook_url":null},"screens":[{"cid":"s46359A3D3A1496302064869","project_cid":"pD588D742E31496301979040","parent_cid":null,"expanded":false,"name":"主页","orientation":"portrait","position":1,"width":1920,"height":1080,"hh":0,"fh":null,"bgcolor":"#FFFFFF","bgimage":null,"deleter_name":null,"deleted_at":null,"artboard_id":null,"artboard_asset_id":null}],"widgets":[{"cid":"wA9C60534751496302128266","screen_cid":"s46359A3D3A1496302064869","timestamp":34421626,"v":true,"name":"hr","left":0.0,"top":90.0,"width":1920.0,"height":60.0,"gid":null,"locked":false,"z":5,"th":"","bc":"","ls":0,"ro":0,"fixed":false,"fixed_type":2,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"},{"cid":"w3F8F7897671496302162517","screen_cid":"s46359A3D3A1496302064869","timestamp":34421631,"v":true,"name":"label","left":10.0,"top":10.0,"width":301.0,"height":76.0,"gid":null,"locked":false,"text":"\u003cp\u003e后台管理系统\u003c/p\u003e","fs":48,"br":0,"bs":0,"ha":"center","va":"middle","z":5,"th":"","lh":70,"td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"#3f51b5","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"},{"cid":"w80336DF86F1496302881358","screen_cid":"s46359A3D3A1496302064869","timestamp":34422183,"v":true,"name":"button","left":0.0,"top":144.0,"width":250.0,"height":80.0,"gid":null,"locked":false,"text":"人员管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"},{"cid":"wF8C9B18C441496302930665","screen_cid":"s46359A3D3A1496302064869","timestamp":34422190,"v":true,"name":"button","left":0.0,"top":224.0,"width":250.0,"height":80.0,"gid":"l17A195C3F71496307666512","locked":false,"text":"维修管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"},{"cid":"w27A8274C171496302930954","screen_cid":"s46359A3D3A1496302064869","timestamp":34422194,"v":true,"name":"button","left":0.0,"top":304.0,"width":250.0,"height":80.0,"gid":"l5FEC99720B1496309266720","locked":false,"text":"统计管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"},{"cid":"w74B038A7001496302951460","screen_cid":"s46359A3D3A1496302064869","timestamp":34422199,"v":true,"name":"rounded_rect","left":0.0,"top":384.0,"width":251.0,"height":700.0,"gid":null,"locked":false,"text":"","fs":14,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"lh":20,"th":"","td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"},{"cid":"wDAF6D4E3321496304938504","screen_cid":"s46359A3D3A1496302064869","timestamp":34422231,"v":true,"name":"image_view","left":251.0,"top":145.0,"width":1672.0,"height":781.0,"gid":null,"locked":false,"bs":0,"br":0,"image":"/uploads3/images/994/9942135/raw_1496305361.jpeg","z":5,"th":"","bg":"","bc":"","tc":"","o":100,"p":true,"ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","clip":null,"filter":""},{"cid":"w850F9568241496309410956","screen_cid":"s46359A3D3A1496302064869","timestamp":34422355,"v":true,"name":"label","left":311.0,"top":35.0,"width":102.0,"height":45.0,"gid":null,"locked":false,"text":"\u003cp\u003e-人员管理\u003c/p\u003e","fs":23,"br":0,"bs":0,"ha":"left","va":"middle","z":5,"th":"","lh":33,"td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"#000000","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0"}],"links":[{"cid":"l52AF32C3601496307660485","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"default","sourcestate_cid":"ss22FF0CF1C11496305476378"},{"cid":"l17A195C3F71496307666512","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"ss22FF0CF1C11496305476378","sourcestate_cid":"default"},{"cid":"l7E04D811F11496307677383","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"default","sourcestate_cid":"ss005ECD4BD01496307677383"},{"cid":"l30E8C3E6311496307677384","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"ss22FF0CF1C11496305476378","sourcestate_cid":"ss005ECD4BD01496307677383"},{"cid":"l1930886F5D1496309255682","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"ss22FF0CF1C11496305476378","sourcestate_cid":"ss005ECD4BD01496307677383"},{"cid":"l5FEC99720B1496309266720","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"ss005ECD4BD01496307677383","sourcestate_cid":"default"},{"cid":"l21E1D91D611496309275925","screen_cid":"s46359A3D3A1496302064869","target_cid":null,"transition":"none","gesture":"tap","timer":0.0,"menu_offset":75,"reset":true,"ani_duration":"0.4s","ani_delay":"","state_cid":null,"widget_cids":"","targetstate_cid":"ss005ECD4BD01496307677383","sourcestate_cid":"ss22FF0CF1C11496305476378"}],"panels":[],"screen_aligns":[{"cid":"s46359A3D3A1496302064869","h":"","v":"474"}],"screenstates":[{"cid":"ss22FF0CF1C11496305476378","screen_cid":"s46359A3D3A1496302064869","timestamp":1499150517,"hh":0,"fh":null,"name":null},{"cid":"ss005ECD4BD01496307677383","screen_cid":"s46359A3D3A1496302064869","timestamp":1499153370,"hh":0,"fh":null,"name":null}],"widgetstates":[{"cid":"ss22FF0CF1C11496305476378wF8C9B18C441496302930665","screen_cid":null,"timestamp":34422190,"v":true,"name":"button","left":0.0,"top":224.0,"width":250.0,"height":80.0,"gid":null,"locked":false,"text":"维修管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"wF8C9B18C441496302930665"},{"cid":"ss22FF0CF1C11496305476378wDAF6D4E3321496304938504","screen_cid":null,"timestamp":34422231,"v":true,"name":"image_view","left":251.0,"top":145.0,"width":1672.0,"height":781.0,"gid":null,"locked":false,"bs":0,"br":0,"image":"/uploads3/images/994/9944001/raw_1496307639.jpeg","z":5,"th":"","bg":"","bc":"","tc":"","o":100,"p":true,"ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","clip":null,"filter":"","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"wDAF6D4E3321496304938504"},{"cid":"ss22FF0CF1C11496305476378w80336DF86F1496302881358","screen_cid":null,"timestamp":34422183,"v":true,"name":"button","left":0.0,"top":144.0,"width":250.0,"height":80.0,"gid":"l52AF32C3601496307660485","locked":false,"text":"人员管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"w80336DF86F1496302881358"},{"cid":"ss22FF0CF1C11496305476378w27A8274C171496302930954","screen_cid":null,"timestamp":34422194,"v":true,"name":"button","left":0.0,"top":304.0,"width":250.0,"height":80.0,"gid":"l21E1D91D611496309275925","locked":false,"text":"统计管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"w27A8274C171496302930954"},{"cid":"ss22FF0CF1C11496305476378w74B038A7001496302951460","screen_cid":null,"timestamp":34422199,"v":true,"name":"rounded_rect","left":0.0,"top":384.0,"width":251.0,"height":700.0,"gid":null,"locked":false,"text":"","fs":14,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"lh":20,"th":"","td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"w74B038A7001496302951460"},{"cid":"ss22FF0CF1C11496305476378w3F8F7897671496302162517","screen_cid":null,"timestamp":34421631,"v":true,"name":"label","left":10.0,"top":10.0,"width":301.0,"height":76.0,"gid":null,"locked":false,"text":"\u003cp\u003e后台管理系统\u003c/p\u003e","fs":48,"br":0,"bs":0,"ha":"center","va":"middle","z":5,"th":"","lh":70,"td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"#3f51b5","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"w3F8F7897671496302162517"},{"cid":"ss22FF0CF1C11496305476378w850F9568241496309410956","screen_cid":null,"timestamp":34422355,"v":true,"name":"label","left":311.0,"top":35.0,"width":102.0,"height":45.0,"gid":null,"locked":false,"text":"\u003cp\u003e-维修管理\u003c/p\u003e","fs":23,"br":0,"bs":0,"ha":"left","va":"middle","z":5,"th":"","lh":33,"td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"#000000","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss22FF0CF1C11496305476378","widget_cid":"w850F9568241496309410956"},{"cid":"ss005ECD4BD01496307677383wF8C9B18C441496302930665","screen_cid":null,"timestamp":34422190,"v":true,"name":"button","left":0.0,"top":224.0,"width":250.0,"height":80.0,"gid":"l1930886F5D1496309255682","locked":false,"text":"维修管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"wF8C9B18C441496302930665"},{"cid":"ss005ECD4BD01496307677383wDAF6D4E3321496304938504","screen_cid":null,"timestamp":34422231,"v":true,"name":"image_view","left":251.0,"top":145.0,"width":1672.0,"height":781.0,"gid":null,"locked":false,"bs":0,"br":0,"image":"/uploads3/images/994/9945393/raw_1496310714.jpeg","z":5,"th":"","bg":"","bc":"","tc":"","o":100,"p":true,"ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","clip":null,"filter":"","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"wDAF6D4E3321496304938504"},{"cid":"ss005ECD4BD01496307677383w80336DF86F1496302881358","screen_cid":null,"timestamp":34422183,"v":true,"name":"button","left":0.0,"top":144.0,"width":250.0,"height":80.0,"gid":"l7E04D811F11496307677383","locked":false,"text":"人员管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"w80336DF86F1496302881358"},{"cid":"ss005ECD4BD01496307677383w27A8274C171496302930954","screen_cid":null,"timestamp":34422194,"v":true,"name":"button","left":0.0,"top":304.0,"width":250.0,"height":80.0,"gid":null,"locked":false,"text":"统计管理","fs":24,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"th":"","td":"normal","bo":0,"i":0,"bg":"#f0f0f0","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"ls":0,"icon":"","is":14,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"w27A8274C171496302930954"},{"cid":"ss005ECD4BD01496307677383w74B038A7001496302951460","screen_cid":null,"timestamp":34422199,"v":true,"name":"rounded_rect","left":0.0,"top":384.0,"width":251.0,"height":700.0,"gid":null,"locked":false,"text":"","fs":14,"br":0,"bs":1,"ha":"center","va":"middle","z":5,"lh":20,"th":"","td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"w74B038A7001496302951460"},{"cid":"ss005ECD4BD01496307677383w3F8F7897671496302162517","screen_cid":null,"timestamp":34421631,"v":true,"name":"label","left":10.0,"top":10.0,"width":301.0,"height":76.0,"gid":null,"locked":false,"text":"\u003cp\u003e后台管理系统\u003c/p\u003e","fs":48,"br":0,"bs":0,"ha":"center","va":"middle","z":5,"th":"","lh":70,"td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"#3f51b5","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"w3F8F7897671496302162517"},{"cid":"ss005ECD4BD01496307677383w850F9568241496309410956","screen_cid":null,"timestamp":34422355,"v":true,"name":"label","left":310.0,"top":35.0,"width":102.0,"height":45.0,"gid":null,"locked":false,"text":"\u003cp\u003e-统计管理\u003c/p\u003e","fs":23,"br":0,"bs":0,"ha":"left","va":"middle","z":5,"th":"","lh":33,"td":"normal","bo":0,"i":0,"bg":"","bc":"","tc":"#000000","o":100,"ts":0,"tsc":"#aaaaaa","ds":0,"sc":"#aaaaaa","ro":0,"padding":0,"ls":0,"fixed":false,"fixed_type":1,"ani_name":"none","ani_delay":"0","ani_count":"1","ani_duration":"0","screenstate_cid":"ss005ECD4BD01496307677383","widget_cid":"w850F9568241496309410956"}],"panelstates":[],"devices":{"android":{"google_nexus":{"width":360,"height":640,"name":"Google Pixel"},"samsung":{"width":360,"height":640,"name":"Samsung"},"Xiaomi":{"width":360,"height":640,"name":"XiaoMi"},"Huawei":{"width":360,"height":640,"name":"Huawei"},"Meizu":{"width":360,"height":600,"name":"Meizu","hide":true},"google_nexus_4":{"width":384,"height":640,"name":"Google Nexus 4","hide":true},"customize":{"width":360,"height":640,"name":"Customize"}},"iphone":{"iphone_4":{"width":320,"height":480,"scale":100,"icon_size":"120x120","name":"iPhone 4","hide":true},"iphone_5":{"width":320,"height":568,"scale":100,"icon_size":"120x120","name":"iPhone 5"},"iphone_6":{"width":375,"height":667,"scale":100,"icon_size":"180x180","name":"iPhone 6/7"},"iphone_6_plus":{"width":414,"height":736,"scale":100,"icon_size":"180x180","name":"iPhone 6/7 Plus"},"ipad_3_4":{"width":768,"height":1024,"scale":75,"icon_size":"152x152","name":"iPad"},"ipad_pro":{"width":1024,"height":1366,"scale":75,"icon_size":"152x152","name":"iPad Pro"}},"ipad":{"ipad_3_4":{"width":768,"height":1024,"scale":75,"icon_size":"152x152","name":"iPad"},"ipad_pro":{"width":1024,"height":1366,"scale":75,"icon_size":"152x152","name":"iPad Pro"}},"web":{"desktop":{"width":1440,"height":1024,"name":"Webpage"}},"default":{"iphone":"iphone_5","ipad":"ipad_3_4","android":"google_nexus"}},"collaborators":[],"threads":[],"comments":[],"teams":[]}</script>
