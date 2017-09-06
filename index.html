@@ -1,79 +1,114 @@
-<html ng-app="myApp">
+<html lang="cn">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>报修</title>
-  <link href="https://cdn.bootcss.com/ionic/1.3.2/css/ionic.min.css" rel="stylesheet">
-  <script src="https://cdn.bootcss.com/ionic/1.3.2/js/ionic.bundle.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>永兴物业</title>
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/element-ui/1.4.3/theme-default/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/element-ui/1.4.3/index.js"></script>
 </head>
 
-<<<<<<< HEAD
 <body>
-
-  <ion-header-bar>
-      <h1 class="title">公共报修</h1>
-  </ion-header-bar>
-
-  <ion-content>
-    <div class="list list-inset">
-      <label class="item item-input item-stacked-label">
-         <span class="input-label">时间</span>
-        <input type="text" placeholder="请输入报修时间">
-      </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">房号</span>
-        <input type="text" placeholder="请输入需要维修房号">
-      </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">姓名</span>
-        <input type="text" placeholder="请输入报修人姓名">
-      </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">联系电话</span>
-        <input type="text" placeholder="请输入报修联系号码">
-      </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">位置</span>
-        <input type="text" placeholder="请输入维修位置">
-      </label>
-      <label class="item item-input item-select">
-        <div class="input-label">保修类别：</div>
-      <select>
-          <option>电类</option>
-          <option selected>水类</option>
-          <option>公共设施</option>
-      </select>
-      </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">保修内容</span>
-      <input type="text" placeholder="请输入保修内容">
-      </label>
-      <div class="card">
-        <div class="item item-text-wrap">
-          上传图片
-        </div>
-      </div>
-      <button class="button button-block button-positive">
-          提交报修
-      </button>
+    <div id="app">
+        <el-row>
+            <el-col :span="22" :offset="1">
+                <el-card class="box-card">
+                    <h3 style="text-align:center">报修</h3>
+                    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
+                        <el-form-item label="时间" prop="datetime">
+                            <el-input v-model="form.datetime" placeholder="请输入报修时间"></el-input>
+                        </el-form-item>
+                        <el-form-item label="房号" prop="room_number">
+                            <el-input v-model="form.room_number" placeholder="请输入需要维修房号"></el-input>
+                        </el-form-item>
+                        <el-form-item label="姓名" prop="repair_name">
+                            <el-input v-model="form.repair_name" placeholder="请输入报修人姓名"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系电话" prop="tel_phone">
+                            <el-input v-model="form.tel_phone" placeholder="请输入报修联系号码"></el-input>
+                        </el-form-item>
+                        <el-form-item label="位置" prop="position">
+                            <el-input v-model="form.position" placeholder="请输入维修位置"></el-input>
+                        </el-form-item>
+                        <el-form-item label="保修类别" prop="repair_type">
+                            <el-select v-model="form.repair_type" placeholder="请选择">
+                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <!-- <el-input v-model="form.repair_type"></el-input> -->
+                        </el-form-item>
+                        <el-form-item label="保修内容" prop="repair_content">
+                            <el-input type="textarea" v-model="form.repair_content" placeholder="请输入保修内容"></el-input>
+                        </el-form-item>
+                        <el-form-item label="图片" prop="">
+                            <el-button>点击上传图片</el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="showForm">提交报修</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 
-  </ion-content>
-
-  <ion-footer-bar>
-    <h1 class="title"></h1>
-  </ion-footer-bar>
-
-  <script>
-    var app = angular.module('myApp', ['ionic']);
-  </script>
-
-=======
-<body class="center">
-<h2><a href="Backstage management/index.html">后台管理</a></h2>
-<h2><a href="Public number management/index.html">公众号管理</a></h2>
->>>>>>> ba3f3ad9a077f58b119dcb96b3e323be4ee578db
 </body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            form: {
+                datetime: '',
+                room_number: '',
+                repair_name: '',
+                tel_phone: '',
+                position: '',
+                repair_type: '',
+                repair_content: ''
+            },
+            options: [{
+                value: '0',
+                label: '水类'
+            }, {
+                value: '1',
+                label: '电类'
+            }, {
+                value: '2',
+                label: '公共设施'
+            }],
+            rules: {
+                datetime: [
+                    { required: true, message: '请输入报修时间', trigger: 'blur' }
+                ],
+                room_number: [
+                    { required: true, message: '请输入报修房号', trigger: 'blur' }
+                ],
+                position: [
+                    { required: true, message: '请输入报修位置', trigger: 'blur' }
+                ],
+                repair_type: [
+                    { required: true, message: '请输入报修类别', trigger: 'blur' }
+                ],
+                repair_content: [
+                    { required: true, message: '请输入报修内容', trigger: 'blur' }
+                ],
+                repair_name: [
+                    { required: true, message: '请输入报修人名字', trigger: 'blur' }
+                ],
+                tel_phone: [
+                    { required: true, message: '请输入联系电话', trigger: 'blur' },
+                    { min: 11, max: 11, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ]
+            }
+        },
+        methods: {
+            showForm(){
+                console.log(this.form)
+            }
+        }
+    })
+
+</script>
 
 </html>
